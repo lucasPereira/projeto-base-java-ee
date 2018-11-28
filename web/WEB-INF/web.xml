@@ -18,4 +18,18 @@
 	<welcome-file-list>
 		<welcome-file>index.xhtml</welcome-file>
 	</welcome-file-list>
+
+	<security-role>
+		<role-name>usuario</role-name>
+	</security-role>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>restrito</web-resource-name>
+			<url-pattern>/restrito/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>usuario</role-name>
+		</auth-constraint>
+	</security-constraint>
 </web-app>
