@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="projeto-base-java-ee">
-        <wb-resource deploy-path="/" source-path="/web" tag="defaultRootSource"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/test"/>
+        <wb-resource deploy-path="/" source-path="/web"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/recursos"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/testes"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/fontes"/>
         <property name="context-root" value="projeto-base-java-ee"/>
         <property name="java-output-path" value="/projeto-base-java-ee/web/WEB-INF/classes"/>
     </wb-module>
