@@ -1,0 +1,5 @@
+@charset "UTF-8";
+
+.ui-menu.ui-widget .ui-menuitem-link .ui-menuitem-text {
+	margin: 0.2em 0.4em;
+}
