@@ -1,5 +1,9 @@
 # Projeto Base JavaEE
 
+## Configurar Ambiente
+
+Adicionar `projetobase 127.0.0.1` ao DNS da máquina.
+
 ## Atualizar dependências
 
 ```

@@ -1,6 +1,7 @@
 package br.projeto.base.java.ee.filtros;
 
 import java.io.IOException;
+import java.security.Principal;
 
 import javax.inject.Inject;
 import javax.servlet.Filter;
@@ -26,12 +27,14 @@ public class FiltroSeguranca implements Filter {
 		HttpServletRequest requisicaoHttp = (HttpServletRequest) requisicao;
 		HttpServletResponse respostaHttp = (HttpServletResponse) resposta;
 		String contexto = requisicao.getServletContext().getContextPath();
+		Principal principal = requisicaoHttp.getUserPrincipal();
+		beanSessao.setPrincipal(principal);
 		if (facesResource(requisicaoHttp)) {
 			proxima.doFilter(requisicao, resposta);
-		} else if (!usuarioEstaAutenticado() && paginaRestrita(requisicaoHttp)) {
-			String redirecionamento = UriBuilder.fromPath(contexto).path("autenticacao.xhtml").build().getPath();
+		} else if (!beanSessao.usuarioEstaAutenticado() && paginaRestrita(requisicaoHttp)) {
+			String redirecionamento = UriBuilder.fromPath(contexto).path("index.xhtml").build().getPath();
 			respostaHttp.sendRedirect(redirecionamento);
-		} else if (usuarioEstaAutenticado() && !paginaRestrita(requisicaoHttp)) {
+		} else if (beanSessao.usuarioEstaAutenticado() && !paginaRestrita(requisicaoHttp)) {
 			String redirecionamento = UriBuilder.fromPath(contexto).path("restrito/index.xhtml").build().getPath();
 			respostaHttp.sendRedirect(redirecionamento);
 		} else {
@@ -49,10 +52,6 @@ public class FiltroSeguranca implements Filter {
 		String pagina = UriBuilder.fromUri(requisicao.getRequestURI()).build().getPath();
 		String restrito = UriBuilder.fromPath(requisicao.getServletContext().getContextPath()).path("restrito").build().getPath();
 		return pagina.startsWith(restrito);
-	}
-
-	private Boolean usuarioEstaAutenticado() {
-		return beanSessao.getUsuario() != null;
 	}
 
 }
