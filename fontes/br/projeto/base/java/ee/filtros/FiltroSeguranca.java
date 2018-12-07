@@ -26,10 +26,17 @@ public class FiltroSeguranca implements Filter {
 		HttpServletResponse respostaHttp = (HttpServletResponse) resposta;
 		String contexto = requisicao.getServletContext().getContextPath();
 		Principal principal = requisicaoHttp.getUserPrincipal();
-		System.out.println(principal);
 		beanSeguranca.atualizarPrincipal(principal);
 		if (facesResource(requisicaoHttp)) {
 			proxima.doFilter(requisicao, resposta);
+		} else if (beanSeguranca.usuarioEstaAutenticado() && paginaSair(requisicaoHttp)) {
+			requisicaoHttp.getSession().invalidate();
+			String reirecionamentoDeVolta = UriBuilder.fromUri("http://projetobase:8080").path(contexto).build().toString();
+			String redirecionamento = UriBuilder.fromUri("https://sistemas.homologacao.ufsc.br/logout").queryParam("service", reirecionamentoDeVolta).build().toString();
+			respostaHttp.sendRedirect(redirecionamento);
+		} else if (!beanSeguranca.usuarioEstaAutenticado() && paginaSair(requisicaoHttp)) {
+			String redirecionamento = UriBuilder.fromPath(contexto).path("index.xhtml").build().getPath();
+			respostaHttp.sendRedirect(redirecionamento);
 		} else if (!beanSeguranca.usuarioEstaAutenticado() && paginaRestrita(requisicaoHttp)) {
 			String redirecionamento = UriBuilder.fromPath(contexto).path("index.xhtml").build().getPath();
 			respostaHttp.sendRedirect(redirecionamento);
@@ -51,6 +58,12 @@ public class FiltroSeguranca implements Filter {
 		String pagina = UriBuilder.fromUri(requisicao.getRequestURI()).build().getPath();
 		String restrito = UriBuilder.fromPath(requisicao.getServletContext().getContextPath()).path("restrito").build().getPath();
 		return pagina.startsWith(restrito);
+	}
+
+	private Boolean paginaSair(HttpServletRequest requisicao) {
+		String pagina = UriBuilder.fromUri(requisicao.getRequestURI()).build().getPath();
+		String sair = UriBuilder.fromPath(requisicao.getServletContext().getContextPath()).path("sair.xhtml").build().getPath();
+		return pagina.startsWith(sair);
 	}
 
 }

@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.security.Principal;
 
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
 
 import br.projeto.base.java.ee.Usuario;
 
@@ -15,9 +13,6 @@ import br.projeto.base.java.ee.Usuario;
 public class BeanSeguranca implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	@Inject
-	private HttpSession sessao;
 
 	private Usuario usuario;
 
@@ -38,8 +33,7 @@ public class BeanSeguranca implements Serializable {
 	}
 
 	public String sair() {
-		sessao.invalidate();
-		return "/index.html?faces-redirect=true";
+		return "/sair.xhtml?faces-redirect=true";
 	}
 
 }
